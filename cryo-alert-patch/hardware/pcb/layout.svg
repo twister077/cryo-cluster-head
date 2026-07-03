@@ -1,0 +1,243 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <style>
+    text { font-family: monospace; font-size: 10px; fill: #e0e0e0; }
+    .label { font-size: 9px; fill: #888; }
+    .small { font-size: 7px; fill: #888; }
+    .title { font-size: 14px; fill: #fff; font-weight: bold; }
+    .trace { stroke: #4a9eff; stroke-width: 1; fill: none; }
+    .trace-thick { stroke: #4a9eff; stroke-width: 1.5; fill: none; }
+    .comp { fill: #2a2a2a; stroke: #555; stroke-width: 1; }
+    .pad { fill: #c9b026; stroke: #8a7020; stroke-width: 0.5; }
+    .via { fill: #555; stroke: #888; stroke-width: 0.5; }
+    .via-hole { fill: #1a1a1a; }
+    .ic { fill: #2a2a3a; stroke: #6a6a8a; stroke-width: 1.5; rx: 3; }
+    .cap { fill: #3a3a2a; stroke: #888; stroke-width: 0.8; }
+    .res { fill: #3a2a2a; stroke: #888; stroke-width: 0.8; }
+    .ind { fill: #2a3a3a; stroke: #4a8; stroke-width: 0.8; }
+    .led { fill: #1a3a1a; stroke: #4a4; stroke-width: 0.8; }
+    .outline { fill: none; stroke: #2d5a2d; stroke-width: 1; stroke-dasharray: 4,2; }
+  </style>
+  <rect width="500" height="500" fill="#1a1a1a"/>
+
+  <text x="250" y="25" text-anchor="middle" class="title">Cryo Alert Patch — PCB Layout (20×20mm)</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- PCB Board Outline -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="150" y="60" width="200" height="200" rx="8" fill="#1d3a1d" stroke="#2d8a2d" stroke-width="2"/>
+  <rect x="154" y="64" width="192" height="192" rx="6" class="outline"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- GND Via Stitching -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <g id="vias">
+    <circle cx="162" cy="72" r="2" class="via"/><circle cx="162" cy="72" r="0.8" class="via-hole"/>
+    <circle cx="180" cy="72" r="2" class="via"/><circle cx="180" cy="72" r="0.8" class="via-hole"/>
+    <circle cx="320" cy="72" r="2" class="via"/><circle cx="320" cy="72" r="0.8" class="via-hole"/>
+    <circle cx="338" cy="72" r="2" class="via"/><circle cx="338" cy="72" r="0.8" class="via-hole"/>
+    <circle cx="162" cy="240" r="2" class="via"/><circle cx="162" cy="240" r="0.8" class="via-hole"/>
+    <circle cx="190" cy="248" r="2" class="via"/><circle cx="190" cy="248" r="0.8" class="via-hole"/>
+    <circle cx="310" cy="248" r="2" class="via"/><circle cx="310" cy="248" r="0.8" class="via-hole"/>
+    <circle cx="338" cy="240" r="2" class="via"/><circle cx="338" cy="240" r="0.8" class="via-hole"/>
+    <circle cx="338" cy="100" r="2" class="via"/><circle cx="338" cy="100" r="0.8" class="via-hole"/>
+    <circle cx="162" cy="130" r="2" class="via"/><circle cx="162" cy="130" r="0.8" class="via-hole"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- nRF52832 — U1 (QFN-48) -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="215" y="110" width="70" height="70" rx="3" class="ic"/>
+  <text x="250" y="148" text-anchor="middle" fill="#8af" font-size="8">nRF52832</text>
+  <text x="250" y="158" text-anchor="middle" class="small">QFN-48</text>
+  <text x="250" y="166" text-anchor="middle" class="small">U1</text>
+  <circle cx="220" cy="115" r="2" fill="#8af"/>
+  <text x="215" y="108" class="small">pin 1</text>
+  <!-- ANT pin indicator (pin 1 = ANT on nRF52) -->
+  <text x="222" y="125" class="small" fill="#4af">ANT</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- MAX30205 — U2 (TDFN-8) -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="160" y="150" width="30" height="30" rx="2" class="comp" fill="#2a2a3a" stroke="#8a6a3a"/>
+  <text x="175" y="168" text-anchor="middle" fill="#fea" font-size="8">MAX</text>
+  <text x="175" y="178" text-anchor="middle" fill="#fea" font-size="6">30205</text>
+  <text x="175" y="185" text-anchor="middle" fill="#ca8" font-size="5">U2</text>
+  <circle cx="163" cy="153" r="1.5" fill="#fea"/>
+
+  <!-- I2C traces: MAX30205 to nRF52 -->
+  <line x1="190" y1="160" x2="215" y2="140" class="trace"/>
+  <text x="192" y="155" class="small">SCL</text>
+  <line x1="190" y1="170" x2="215" y2="150" class="trace"/>
+  <text x="192" y="175" class="small">SDA</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- CR1220 Battery Holder — BT1 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="155" y="70" width="40" height="35" rx="3" class="comp" stroke="#aaa"/>
+  <text x="175" y="90" text-anchor="middle" fill="#ccc" font-size="7">CR1220</text>
+  <text x="175" y="97" text-anchor="middle" fill="#aaa" font-size="5">BT1</text>
+  <circle cx="165" cy="78" r="2" class="pad"/>
+  <circle cx="185" cy="78" r="2" class="pad"/>
+  <text x="165" y="72" class="small" fill="#4a4">VDD</text>
+  <text x="185" y="72" class="small" fill="#a44">GND</text>
+
+  <!-- Power traces -->
+  <line x1="165" y1="78" x2="165" y2="110" class="trace-thick"/>
+  <line x1="185" y1="78" x2="185" y2="110" class="trace-thick"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Decoupling Capacitors C1-C3 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="220" y="78" width="12" height="8" rx="1" class="cap"/>
+  <text x="226" y="84" text-anchor="middle" class="small">C1</text>
+  <rect x="240" y="78" width="12" height="8" rx="1" class="cap"/>
+  <text x="246" y="84" text-anchor="middle" class="small">C2</text>
+  <rect x="260" y="78" width="12" height="8" rx="1" class="cap"/>
+  <text x="266" y="84" text-anchor="middle" class="small">C3</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- I2C Pull-up Resistors R1, R2 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="286" y="130" width="14" height="8" rx="1" class="res"/>
+  <text x="293" y="136" text-anchor="middle" class="small">R1</text>
+  <rect x="286" y="150" width="14" height="8" rx="1" class="res"/>
+  <text x="293" y="156" text-anchor="middle" class="small">R2</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- RESET Pull-up R3 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="286" y="170" width="14" height="8" rx="1" class="res"/>
+  <text x="293" y="176" text-anchor="middle" class="small">R3</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Antenna Matching Network — L1, C4, C5 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="278" y="93" width="10" height="7" rx="1" class="ind"/>
+  <text x="283" y="98" text-anchor="middle" class="small" fill="#4a8">L1</text>
+  <rect x="278" y="103" width="10" height="7" rx="1" class="cap"/>
+  <text x="283" y="108" text-anchor="middle" class="small" fill="#888">C4</text>
+  <rect x="292" y="93" width="10" height="7" rx="1" class="cap"/>
+  <text x="297" y="98" text-anchor="middle" class="small" fill="#888">C5</text>
+
+  <!-- Antenna matching traces -->
+  <line x1="285" y1="110" x2="285" y2="100" class="trace"/>
+  <line x1="283" y1="93" x2="283" y2="88" class="trace"/>
+  <line x1="297" y1="93" x2="297" y2="88" class="trace"/>
+
+  <!-- PCB Antenna (top-right) -->
+  <path d="M 350 90 L 340 90 L 340 80 L 330 80 L 330 70 L 320 70 L 305 70" stroke="#4a9eff" stroke-width="1.5" fill="none"/>
+  <text x="325" y="68" class="small" fill="#4af">antenna</text>
+
+  <!-- BLE matching section outline -->
+  <rect x="290" y="85" width="56" height="30" rx="2" fill="none" stroke="#4a8eff" stroke-width="0.8" stroke-dasharray="3,2"/>
+  <text x="318" y="100" text-anchor="middle" class="small" fill="#4af">match</text>
+
+  <!-- Antenna feed trace -->
+  <line x1="350" y1="90" x2="345" y2="90" class="trace"/>
+  <line x1="345" y1="90" x2="297" y2="90" class="trace"/>
+  <line x1="283" y1="88" x2="283" y2="85" class="trace"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- LED1 (0402) + R4 (0402) -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="240" y="192" width="10" height="7" rx="1" class="led"/>
+  <text x="245" y="197" text-anchor="middle" class="small" fill="#4a4">LED1</text>
+
+  <rect x="258" y="192" width="10" height="7" rx="1" class="res"/>
+  <text x="263" y="197" text-anchor="middle" class="small">R4</text>
+
+  <!-- LED traces -->
+  <line x1="245" y1="185" x2="245" y2="192" class="trace"/>
+  <line x1="255" y1="195" x2="258" y2="195" class="trace"/>
+  <line x1="268" y1="195" x2="285" y2="195" class="trace"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SWD Programmer Header — J1 -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="170" y="235" width="70" height="16" rx="2" class="comp" fill="#2a2a2a" stroke="#888"/>
+  <text x="205" y="246" text-anchor="middle" class="small" fill="#aaa">J1 SWD 1.27mm</text>
+
+  <!-- J1 pads: VDD, SWDIO, SWCLK, GND -->
+  <circle cx="178" cy="243" r="2.5" class="pad"/>
+  <circle cx="191" cy="243" r="2.5" class="pad"/>
+  <circle cx="204" cy="243" r="2.5" class="pad"/>
+  <circle cx="217" cy="243" r="2.5" class="pad"/>
+
+  <text x="178" y="239" class="small" text-anchor="middle" fill="#f66">1</text>
+  <text x="191" y="239" class="small" text-anchor="middle">2</text>
+  <text x="204" y="239" class="small" text-anchor="middle">3</text>
+  <text x="217" y="239" class="small" text-anchor="middle" fill="#4af">4</text>
+
+  <!-- SWD traces -->
+  <line x1="178" y1="235" x2="178" y2="200" class="trace"/>
+  <line x1="191" y1="235" x2="191" y2="200" class="trace"/>
+  <line x1="204" y1="235" x2="204" y2="200" class="trace"/>
+  <line x1="217" y1="235" x2="217" y2="200" class="trace"/>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Silkscreen Labels -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <text x="215" y="185" class="small">R3 10k</text>
+  <text x="225" y="210" class="small" fill="#4a4">LED</text>
+  <text x="255" y="210" class="small">R4 100k</text>
+
+  <text x="155" y="65" class="small" fill="#aaa">REV A</text>
+  <text x="310" y="252" class="small" fill="#aaa">20×20mm</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Dimensions -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <line x1="150" y1="270" x2="350" y2="270" stroke="#555" stroke-width="0.5"/>
+  <line x1="150" y1="265" x2="150" y2="275" stroke="#555" stroke-width="0.5"/>
+  <line x1="350" y1="265" x2="350" y2="275" stroke="#555" stroke-width="0.5"/>
+  <text x="250" y="282" text-anchor="middle" class="small">20 mm</text>
+
+  <line x1="140" y1="60" x2="140" y2="260" stroke="#555" stroke-width="0.5"/>
+  <line x1="135" y1="60" x2="145" y2="60" stroke="#555" stroke-width="0.5"/>
+  <line x1="135" y1="260" x2="145" y2="260" stroke="#555" stroke-width="0.5"/>
+  <text x="132" y="165" text-anchor="middle" transform="rotate(-90,132,165)" class="small">20 mm</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- BOM Legend -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <text x="30" y="320" class="label">Bill of Materials:</text>
+
+  <rect x="30" y="327" width="10" height="10" fill="#2a2a3a" stroke="#6a6a8a" stroke-width="1"/>
+  <text x="45" y="336" class="small">U1: nRF52832 QFN-48</text>
+
+  <rect x="30" y="342" width="10" height="10" fill="#2a2a3a" stroke="#8a6a3a" stroke-width="1"/>
+  <text x="45" y="351" class="small">U2: MAX30205 TDFN-8</text>
+
+  <rect x="30" y="357" width="10" height="10" fill="#2a2a2a" stroke="#aaa" stroke-width="1"/>
+  <text x="45" y="366" class="small">BT1: CR1220 battery holder</text>
+
+  <rect x="250" y="327" width="10" height="10" fill="#3a3a2a" stroke="#888" stroke-width="0.8"/>
+  <text x="265" y="336" class="small">C1-C3: 100nF / 10µF MLCC 0402</text>
+
+  <rect x="250" y="342" width="10" height="10" fill="#3a2a2a" stroke="#888" stroke-width="0.8"/>
+  <text x="265" y="351" class="small">R1-R3: 10kΩ resistor 0402</text>
+
+  <rect x="250" y="357" width="10" height="10" fill="#3a2a2a" stroke="#888" stroke-width="0.8"/>
+  <text x="265" y="366" class="small">R4: 100kΩ resistor 0402</text>
+
+  <rect x="250" y="372" width="10" height="10" fill="#1a3a1a" stroke="#4a4" stroke-width="0.8"/>
+  <text x="265" y="381" class="small">LED1: Green LED 0402</text>
+
+  <rect x="250" y="387" width="10" height="10" fill="#2a3a3a" stroke="#4a8" stroke-width="0.8"/>
+  <text x="265" y="396" class="small">L1: 3.9nH inductor 0402</text>
+
+  <rect x="250" y="402" width="10" height="10" fill="#3a3a2a" stroke="#888" stroke-width="0.8"/>
+  <text x="265" y="411" class="small">C4-C5: 1pF / 0.8pF MLCC 0402</text>
+
+  <rect x="250" y="417" width="10" height="10" fill="#2a2a2a" stroke="#888" stroke-width="1"/>
+  <text x="265" y="426" class="small">J1: SWD header 4-pin 1.27mm</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Notes -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <text x="30" y="440" class="label">Notes:</text>
+  <text x="30" y="452" class="small">• 2-layer PCB, ENIG finish, 0.8mm thickness, 20×20mm</text>
+  <text x="30" y="464" class="small">• All passives 0402 — bottom layer = solid GND pour</text>
+  <text x="30" y="476" class="small">• LED current ~3µA @ 100kΩ — direct CR1220 connection</text>
+  <text x="30" y="488" class="small">• Weight target: &lt;5g including CR1220 battery</text>
+</svg>

@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 600" width="700" height="600">
+  <style>
+    text { font-family: monospace; font-size: 10px; fill: #e0e0e0; }
+    .label { font-size: 9px; fill: #888; }
+    .small { font-size: 7px; fill: #666; }
+    .title { font-size: 14px; fill: #fff; font-weight: bold; }
+    .dim { stroke: #666; stroke-width: 0.5; fill: none; }
+  </style>
+
+  <rect width="700" height="600" fill="#1a1a1a"/>
+
+  <text x="350" y="25" text-anchor="middle" class="title">Active Cooler — Headband Assembly</text>
+
+  <!-- ===== LEFT: Full headband assembly on head (profile) ===== -->
+  <text x="155" y="55" text-anchor="middle" class="label">On-head View (profile)</text>
+
+  <!-- Head silhouette -->
+  <ellipse cx="155" cy="240" rx="70" ry="90" fill="none" stroke="#5a3a3a" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="155" y="300" text-anchor="middle" class="small" fill="#a66">head</text>
+
+  <!-- Headband -->
+  <path d="M 75 160 Q 155 100 235 160" fill="none" stroke="#888" stroke-width="4"/>
+  <path d="M 75 160 Q 155 110 235 160" fill="none" stroke="#aaa" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="155" y="125" text-anchor="middle" class="small" fill="#aaa">elastic headband</text>
+
+  <!-- Cooler module on forehead -->
+  <rect x="115" y="165" width="80" height="50" rx="6" fill="#2d3a2d" stroke="#4d7a4d" stroke-width="1.5"/>
+  <text x="155" y="185" text-anchor="middle" fill="#4d7a4d" font-size="7">ACTIVE</text>
+  <text x="155" y="195" text-anchor="middle" fill="#4d7a4d" font-size="7">COOLER</text>
+
+  <!-- USB-C cable down -->
+  <path d="M 195 190 Q 230 220 220 350" fill="none" stroke="#e67e22" stroke-width="2"/>
+  <text x="225" y="280" class="small" fill="#e67e22">USB-C to power bank</text>
+
+  <!-- Velcro/magnet attachment -->
+  <rect x="110" y="170" width="92" height="8" rx="1" fill="none" stroke="#ccc" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <text x="155" y="176" text-anchor="middle" class="small" fill="#ccc">velcro</text>
+
+  <!-- ===== RIGHT: Exploded view ===== -->
+  <text x="480" y="55" text-anchor="middle" class="label">Exploded Assembly</text>
+
+  <!-- 1. Headband (top) -->
+  <rect x="370" y="65" width="220" height="25" rx="12" fill="#888" stroke="#aaa" stroke-width="1"/>
+  <text x="480" y="81" text-anchor="middle" fill="#fff" font-size="8">Elastic Headband</text>
+
+  <!-- 2. Velcro strip -->
+  <rect x="400" y="96" width="160" height="6" rx="2" fill="#666" stroke="#888" stroke-width="0.5"/>
+  <text x="480" y="104" text-anchor="middle" class="small" fill="#888">hook-and-loop velcro</text>
+
+  <!-- 3. PETG enclosure top -->
+  <rect x="390" y="108" width="180" height="50" rx="6" fill="#2d3a2d" stroke="#4d7a4d" stroke-width="1.5"/>
+  <text x="480" y="130" text-anchor="middle" class="small" fill="#4d7a4d">PETG Enclosure — Top Half</text>
+  <!-- Fan vents -->
+  <rect x="420" y="116" width="8" height="6" rx="1" fill="#1a1a1a"/>
+  <rect x="435" y="116" width="8" height="6" rx="1" fill="#1a1a1a"/>
+  <rect x="450" y="116" width="8" height="6" rx="1" fill="#1a1a1a"/>
+  <rect x="465" y="116" width="8" height="6" rx="1" fill="#1a1a1a"/>
+  <rect x="480" y="116" width="8" height="6" rx="1" fill="#1a1a1a"/>
+  <text x="450" y="126" text-anchor="middle" class="small">vent slots</text>
+
+  <!-- 4. Fan -->
+  <rect x="420" y="164" width="120" height="30" rx="4" fill="#2a2a3a" stroke="#6a6a8a" stroke-width="1"/>
+  <circle cx="480" cy="179" r="10" fill="none" stroke="#6a6a8a" stroke-width="0.8"/>
+  <line x1="480" y1="169" x2="480" y2="189" stroke="#6a6a8a" stroke-width="0.5"/>
+  <line x1="470" y1="179" x2="490" y2="179" stroke="#6a6a8a" stroke-width="0.5"/>
+  <text x="540" y="182" class="small" fill="#6a6a8a">30mm fan, 5V</text>
+
+  <!-- 5. Heatsink -->
+  <rect x="410" y="200" width="140" height="30" rx="2" fill="#4a4a4a" stroke="#aaa" stroke-width="1"/>
+  <!-- Fins -->
+  <line x1="420" y1="200" x2="420" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="430" y1="200" x2="430" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="440" y1="200" x2="440" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="450" y1="200" x2="450" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="460" y1="200" x2="460" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="470" y1="200" x2="470" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="480" y1="200" x2="480" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="490" y1="200" x2="490" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="500" y1="200" x2="500" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="510" y1="200" x2="510" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="520" y1="200" x2="520" y2="230" stroke="#666" stroke-width="0.8"/>
+  <line x1="530" y1="200" x2="530" y2="230" stroke="#666" stroke-width="0.8"/>
+  <text x="560" y="220" class="small" fill="#aaa">aluminum heatsink</text>
+
+  <!-- 6. Peltier element -->
+  <rect x="440" y="236" width="80" height="20" rx="2" fill="#3a2a2a" stroke="#e67e22" stroke-width="1.5"/>
+  <!-- hot/cold labels -->
+  <text x="450" y="250" fill="#e74c3c" font-size="6">HOT</text>
+  <text x="510" y="250" fill="#4af" font-size="6">COLD</text>
+  <text x="480" y="244" text-anchor="middle" fill="#e67e22" font-size="6">Peltier (30×30mm)</text>
+  <!-- Wires -->
+  <path d="M 440 246 L 420 246 L 420 260" fill="none" stroke="#e67e22" stroke-width="1"/>
+  <path d="M 520 246 L 540 246 L 540 260" fill="none" stroke="#e67e22" stroke-width="1"/>
+
+  <!-- 7. Copper cold plate -->
+  <rect x="445" y="258" width="70" height="6" rx="1" fill="#c97" stroke="#ca8630" stroke-width="0.8"/>
+  <text x="480" y="267" text-anchor="middle" class="small" fill="#ca8630">copper cold plate</text>
+
+  <!-- 8. Skin contact pad -->
+  <rect x="445" y="266" width="70" height="8" rx="2" fill="#5a4a3a" stroke="#888" stroke-width="0.5"/>
+  <text x="480" y="277" text-anchor="middle" class="small" fill="#888">silicone contact pad</text>
+
+  <!-- 9. PETG enclosure bottom -->
+  <rect x="390" y="278" width="180" height="40" rx="6" fill="#2d3a2d" stroke="#4d7a4d" stroke-width="1.5"/>
+  <text x="480" y="300" text-anchor="middle" class="small" fill="#4d7a4d">PETG Enclosure — Bottom Half</text>
+
+  <!-- PCB inside bottom half -->
+  <rect x="405" y="286" width="60" height="24" rx="2" fill="#1d3a1d" stroke="#2d8a2d" stroke-width="0.8"/>
+  <text x="435" y="300" text-anchor="middle" class="small" fill="#4a8a4a">PCB</text>
+
+  <!-- Assembly arrows -->
+  <line x1="480" y1="90" x2="480" y2="108" stroke="#4a9eff" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="480" y1="158" x2="480" y2="164" stroke="#4a9eff" stroke-width="1"/>
+  <line x1="480" y1="194" x2="480" y2="200" stroke="#4a9eff" stroke-width="1"/>
+  <line x1="480" y1="230" x2="480" y2="236" stroke="#4a9eff" stroke-width="1"/>
+  <line x1="480" y1="256" x2="480" y2="258" stroke="#4a9eff" stroke-width="1"/>
+  <line x1="480" y1="274" x2="480" y2="278" stroke="#4a9eff" stroke-width="1"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#4a9eff"/>
+    </marker>
+  </defs>
+
+  <!-- ===== BOTTOM: Assembly layers ===== -->
+  <text x="350" y="360" text-anchor="middle" class="label">Stacking Order (from head outward)</text>
+
+  <rect x="300" y="370" width="40" height="16" rx="2" fill="#5a4a3a" stroke="#888" stroke-width="0.8"/>
+  <text x="320" y="381" text-anchor="middle" class="small" fill="#888">skin pad</text>
+
+  <text x="345" y="383" fill="#fff" font-size="12">→</text>
+
+  <rect x="360" y="370" width="40" height="16" rx="2" fill="#c97" stroke="#ca8630" stroke-width="0.8"/>
+  <text x="380" y="381" text-anchor="middle" class="small" fill="#ca8630">cold plate</text>
+
+  <text x="405" y="383" fill="#fff" font-size="12">→</text>
+
+  <rect x="420" y="370" width="50" height="16" rx="2" fill="#3a2a2a" stroke="#e67e22" stroke-width="0.8"/>
+  <text x="445" y="381" text-anchor="middle" class="small" fill="#e67e22">Peltier</text>
+
+  <text x="475" y="383" fill="#fff" font-size="12">→</text>
+
+  <rect x="490" y="370" width="50" height="16" rx="2" fill="#4a4a4a" stroke="#aaa" stroke-width="0.8"/>
+  <text x="515" y="381" text-anchor="middle" class="small" fill="#aaa">heatsink</text>
+
+  <text x="545" y="383" fill="#fff" font-size="12">→</text>
+
+  <rect x="560" y="370" width="40" height="16" rx="2" fill="#2a2a3a" stroke="#6a6a8a" stroke-width="0.8"/>
+  <text x="580" y="381" text-anchor="middle" class="small" fill="#6a6a8a">fan</text>
+
+  <!-- ===== Dimensions ===== -->
+  <text x="350" y="415" text-anchor="middle" class="label">Module Dimensions</text>
+
+  <rect x="300" y="425" width="160" height="35" rx="4" fill="none" stroke="#4d7a4d" stroke-width="1"/>
+  <text x="380" y="440" text-anchor="middle" class="small" fill="#4d7a4d">Enclosure: 55 × 45 × 18 mm</text>
+  <text x="380" y="452" text-anchor="middle" class="small" fill="#4d7a4d">Weight target: &lt;120 g (no cable)</text>
+
+  <!-- Power info -->
+  <text x="350" y="490" text-anchor="middle" class="label">Power &amp; Connections</text>
+  <text x="350" y="505" text-anchor="middle" class="small">USB-C PD input: 9V-12V / 2-3A (from power bank in pocket)</text>
+  <text x="350" y="517" text-anchor="middle" class="small">Peltier: 12V / 2A max (24W) — PWM-controlled via IRLZ44N</text>
+  <text x="350" y="529" text-anchor="middle" class="small">Fan: 5V / 0.1A — regulated from VBUS via LDO</text>
+  <text x="350" y="541" text-anchor="middle" class="small">Cable: USB-C to USB-C, 1.5m — acts as physical kill switch</text>
+
+  <!-- Safety note -->
+  <text x="350" y="570" text-anchor="middle" font-size="8" fill="#e74c3c">⚠ Max cooling cycle: 15 min. Auto shutdown via firmware safety timer.</text>
+
+</svg>

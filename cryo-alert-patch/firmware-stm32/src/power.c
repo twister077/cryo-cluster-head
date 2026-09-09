@@ -6,20 +6,11 @@ void Power_Init(void) {
 }
 
 void Power_EnterSleepMode(void) {
-    /* SLEEPDEEP not set: normal Sleep mode, wakes on SysTick */
-    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+    /* CLEARSLEEP not set: normal Sleep mode, wakes on SysTick interrupt */
+    SCB->SCR = (SCB->SCR & ~SCB_SCR_SLEEPDEEP_Msk) | SCB_SCR_SLEEPONEXIT_Msk;
     __WFI();
-}
-
-void Power_EnterStopMode(void) {
-    /* STOP0 mode: lowest power while retaining SRAM.
-       After wake: re-enable HSI and restore SysTick. */
-    HAL_SuspendTick();
-
-    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-    HAL_PWREx_EnterSTOP0Mode(PWR_STOPENTRY_WFI);
-    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
-
-    SystemCoreClock = 16000000U; /* 16 MHz HSI */
-    HAL_ResumeTick();
+    /* after wake: re-disable sleep-on-exit so main loop keeps running */
+    SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;
+    __DSB();
+    __ISB();
 }

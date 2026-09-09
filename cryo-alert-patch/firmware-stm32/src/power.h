@@ -5,6 +5,5 @@
 
 void Power_Init(void);
 void Power_EnterSleepMode(void);
-void Power_EnterStopMode(void);
 
 #endif

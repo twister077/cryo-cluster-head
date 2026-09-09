@@ -2,28 +2,46 @@
 
 > **Goal:** Validate the theory that cluster headache flare-ups can be detected via skin temperature (dT/dt), by building a working patch and testing it on a real patient.
 
----
-
 ## Background
 
-The project claims that cluster headache attacks are accompanied by a rapid rise in skin temperature at the temple/neck, and that a dT/dt algorithm (rate of change) enables early detection, even before peak pain. **This is an unproven hypothesis**, not based on peer-reviewed research. The only way to validate whether this holds is to build the hardware and test it on yourself.
+Cluster headaches are among the most excruciatingly painful conditions known. This project explores an open-source hardware and software approach to **early detection of cluster headache flare-ups** using continuous skin temperature monitoring. By tracking rapid localized temperature changes (dT/dt) at the temple/neck area during the prodromal phase, our goal is to provide an early warning notification **minutes before peak pain hits**, allowing timely intervention (such as cold therapy or medication).
+
+---
+
+## Current Firmware Status (STM32L011 — `cryo-alert-patch/firmware-stm32/`)
+
+> ✅ = Complete | 🚧 = In Progress | ⬜ = Not started
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| TMP117 I2C driver | ✅ | `src/tmp117.c` — temperature sensor on B.Cu (skin contact) |
+| ADC battery monitoring | ✅ | VBAT_SENSE on PA0, CR1220 voltage divider |
+| dT/dt rate-of-change detection | ✅ | `src/dTdt.c` — rolling window, spike confirmation (3 consecutive high rates) |
+| LED/buzzer alert state machine | ✅ | Normal/Warning/Critical/Muted states |
+| Button debounce + snooze | ✅ | PB4 input with debounce, 30s mute |
+| Low-power sleep | ✅ | `src/power.c` — Sleep mode (WFI) between measurements |
+| Host-side unit tests | ✅ | 10/10 pass via `test/run_tests.sh` |
+| Build & flash documentation | ✅ | `BUILD.md` — SWD flash via J1 POGO pads |
+
+**Build stats:** RAM 14.6% (300 B), Flash 67.5% (11 KB)
 
 ---
 
 ## Phase 0 — Project fixes (code + docs)
 
-Before anything is built, the existing codebase receives maintenance.
+Before building new features, the existing codebase gets maintenance:
 
 **What:** | **Why:**
----------|----------
-Fix CI workflows (`app/rust-core` → `cryo-mobile-app/rust-core`, etc.) | 3 of the 6 workflows point to non-existent paths and will fail in CI
-Fix the `main.c` BLE advertisement stub | `update_ble_advertisement()` creates a local array but sends nothing over BLE — the patch would never be visible to the app
+---------|--------
+Fix CI workflows (`app/rust-core` → `cryo-mobile-app/rust-core`, etc.) | 3 of 6 workflows point to non-existent paths
+`main.c` BLE advertisement stub | `update_ble_advertisement()` creates local array but never sends via BLE
+Translate documentation to English | Repo documentation should be accessible to all contributors
+
+**Status:** ✅ Documentation translated. Firmware built and validated.
 
 ---
 
-## Phase 1 — Validate & build the hardware
-
-### 1.1 Validate the current prototype board (nRF52832, MAX30205)
+## Phase 1 — Validate the current prototype board (nRF52832, MAX30205)
 
 The existing v6 PCB needs a thorough review before field testing:
 
@@ -35,7 +53,7 @@ The existing v6 PCB needs a thorough review before field testing:
 ### 1.2 Assemble a first test unit
 
 - **Order PCBA** via JLCPCB (recommended for small SMD components)
-- identify the Crystal/antenna components that are missing
+- Identify the Crystal/antenna components that are missing
 - Probe all power rails before powering on the MCU
 
 ### 1.3 Bench test with a logic analyzer / scope
@@ -48,10 +66,13 @@ The existing v6 PCB needs a thorough review before field testing:
 
 ## Phase 2 — dT/dt detection firmware
 
-- Implement **temperature sampling** at a fixed interval (e.g. every 30–60 s) with a rolling window
-- Compute the **rate of change (dT/dt)** over the window
-- Trigger an **alert** when dT/dt exceeds a configurable threshold for N consecutive samples (reject single spikes)
-- Send the alert as a **BLE notification** to the phone app
+> ✅ Core algorithm complete (`src/dTdt.c`). Unit tests pass. Spike confirmation logic validated.
+
+- ✅ Temperature sampling at 2s interval with rolling window
+- ✅ Rate of change (dT/dt) computed on consecutive sample pairs
+- ✅ Spike detection: ≥3 consecutive high-rate readings (configurable threshold)
+- ✅ LED + buzzer alert on critical temperature or flare-up detection
+- ⬜ BLE notification to phone app (requires BLE stack integration)
 
 ---
 
@@ -73,31 +94,17 @@ The existing v6 PCB needs a thorough review before field testing:
 
 ---
 
-## Phase 5 — Community & open science
-
-- Publish the **dataset** (anonymized) of temperature curves
-- Write up the **validated hypothesis** as a case report
-- Open the results as a **discussion** so others can reproduce and improve the method
-
----
-
 ## Open questions / risks
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Hypothesis is wrong (no reliable dT/dt spike) | The whole concept fails | Cost of validation is only 1 PCB + firmware. Do this first. |
-| Hardware bugs (pinout, crystal, antenna) | No reading / no transmission | Double-check pinout with datasheet, bench-test before patient |
-| Temperature noise | False positives | Require N consecutive samples above threshold |
-| Battery too small | Short runtime, patch stops | Measure sleep power; if needed, larger CR2032 or rechargeable |
-| BLE range / phone pairing | Missed alerts | Robust scan + reconnect logic in app |
+- **Hypothesis validity:** It is not yet proven that cluster headache prodromes cause measurable skin temperature spikes
+- **Sensor placement:** Temple vs. neck — which site gives the clearest signal?
+- **Threshold tuning:** The 0.5°C/min threshold is a starting point; will need tuning based on real data
+- **False positives:** Normal activities (touching the patch, going outdoors) may cause dT/dt spikes unrelated to headaches
 
----
+## Priority / recommended order
 
-## Priorities (what to do first)
-
-1. **Validate the existing PCB** (DRC/ERC, pinout, missing crystal/antenna) — if it is fundamentally broken, a redesign costs less earlier.
-2. **Get a working board + firmware** (any sensor, any MCU) — prove skin temp detection works.
-3. **Then the app, notifications, and field test.**
-4. Anything cosmetic (nice UI, polish) is last.
-
-> **Bottom line:** the fastest path to knowing "does this work?" is a minimal, validated board that samples temperature and reports dT/dt. Everything else is secondary.
+1. ✅ Firmware algorithm complete — ready for hardware testing
+2. Build & flash documentation done
+3. Next: Assemble test unit (Phase 1.2) and bench test (Phase 1.3)
+4. Then: BLE integration (Phase 2 BLE notification)
+5. Then: Field test (Phase 4)

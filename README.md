@@ -37,7 +37,7 @@ Whether you are an embedded firmware engineer, PCB designer (KiCad), mobile app 
 
 ## Repository Structure
 
-- `cryo-alert-patch/` — Hardware schematics, Gerber files, and firmware (`firmware-stm32/` for STM32 test track, `firmware/` for Zephyr/BLE).
+- `cryo-alert-patch/` — Hardware schematics, Gerber files, and firmware (`firmware-stm32/` for STM32 test track, `firmware-zephyr-ble/` for Zephyr/BLE).
 - `cryo-mobile-app/` — Flutter companion app with Rust core for real-time $\Delta T/\Delta t$ analysis *(Track B)*.
 - `cryo-active-cooler/` — Optional Peltier active cooling module concept *(Track B)*.
 - `plan.md` — Detailed multi-phase project roadmap.

@@ -41,26 +41,26 @@ Translate documentation to English | Repo documentation should be accessible to 
 
 ---
 
-## Phase 1 — Validate the current prototype board (nRF52832, MAX30205)
+## Phase 1 — Validate the current prototype board (STM32L011, TMP117)
 
 The existing v6 PCB needs a thorough review before field testing:
 
 - **Run DRC/ERC again** — confirm the routing was completed, not just the schematic
-- **Verify pin assignments** against the actual nRF52832 datasheet (QFN-48) — the earlier analysis found mismatches between schematic nets and physical pins (e.g. GND instead of DEC/XC pins)
-- **Check the battery positive terminal** — the via to the VCC_NRF plane was previously routed outside the board boundary
-- **Confirm antenna matching** — without a 32 MHz crystal and antenna matching network the chip cannot transmit
+- **Verify pin assignments** against the STM32L011 datasheet (QFN-32) — ensure correct mapping for I2C, ADC, GPIO, and SWD pins
+- **Check the battery positive terminal** — verify VBAT_SENSE routing and proper connection to the CR1220 battery
+- **Confirm SWD header** — ensure SWDIO and SWCLK are correctly routed to the J1 POGO pads for flashing
 
 ### 1.2 Assemble a first test unit
 
 - **Order PCBA** via JLCPCB (recommended for small SMD components)
-- Identify the Crystal/antenna components that are missing
+- Identify any missing components (e.g., crystal for STM32, decoupling caps)
 - Probe all power rails before powering on the MCU
 
 ### 1.3 Bench test with a logic analyzer / scope
 
-- Verify **I2C communication** with the temperature sensor
-- Confirm **BLE advertisement** packets on a sniffer
-- Measure the **actual power consumption** in sleep mode
+- Verify **I2C communication** with the TMP117 temperature sensor
+- Confirm **LED and buzzer** operation according to the alert state machine
+- Measure the **actual power consumption** in low‑power sleep mode
 
 ---
 

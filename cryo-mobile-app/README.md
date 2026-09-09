@@ -6,6 +6,8 @@
 
 Pairs with the [Cryo Alert Patch](../cryo-alert-patch) via BLE to detect rapid temperature spikes (dT/dt) characteristic of cluster headache attacks. Sends push notifications before the peak pain hits.
 
+> **Note on Project Status:** The mobile application relies on BLE connectivity, which belongs to **Track B (Future / BLE Version)**. The current active hardware and firmware testing track is **Track A (Non-BLE Test Patch)** using the STM32L011 + TMP117.
+
 ## Standalone Value
 
 This app works standalone with the Alert Patch — no cooling hardware required:
@@ -21,13 +23,13 @@ This app works standalone with the Alert Patch — no cooling hardware required:
 ```
 ┌──────────────┐   BLE    ┌───────────────┐   FFI    ┌──────────────┐
 │ Alert Patch  │─────────▶│  Rust Core     │─────────▶│  Flutter UI  │
-│ (nRF52 +     │          │  - BLE parser  │          │  - Dashboard │
-│  MAX30205)   │          │  - dT/dt algo  │          │  - History   │
+│ (Track B BLE)│          │  - BLE parser  │          │  - Dashboard │
+│              │          │  - dT/dt algo  │          │  - History   │
 │              │          │  - Notification│          │  - Settings  │
 └──────────────┘          └───────────────┘          └──────────────┘
 ```
 
-## Quick Start
+## Quick Start *(Track B - BLE Integration)*
 
 ```bash
 # Rust core

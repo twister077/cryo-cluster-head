@@ -6,6 +6,8 @@
 
 An optional add-on for the CryoClusterHead system. When a flare-up is detected, this headband-mounted module provides active cooling directly to the painful area.
 
+> **Note on Project Status:** This module (along with BLE features) belongs to **Track B (Future / BLE Version)**. The current active development track is **Track A (Non-BLE Test Patch)** using the STM32L011 + TMP117.
+
 ## Features
 
 Unlike simple Peltier drivers, the Active Cooler is a safety-first intelligent module:
@@ -14,7 +16,7 @@ Unlike simple Peltier drivers, the Active Cooler is a safety-first intelligent m
 - **Triple temp voting** — reads temperature from 3 independent sources for fail-safe operation
 - **15-minute max timer** — hard limit prevents over-cooling
 - **Auto step-down** — gradually reduces cooling as temperature normalizes
-- **No phone required** — can read the Alert Patch directly via BLE
+- **No phone required** — can read the Alert Patch directly via BLE *(Track B)*
 
 ## Temperature Safety Voting
 
@@ -50,7 +52,7 @@ If fewer than 2 sources agree → **safe shutdown** (Level 0).
 - Auto step-down as temp drops
 - Hard cutoff after 15 minutes regardless of level
 
-## Quick Start
+## Quick Start *(Track B - Planned)*
 
 ```bash
 cd firmware

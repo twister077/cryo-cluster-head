@@ -14,6 +14,12 @@ A simplified, standalone test version of the patch with **no Bluetooth**. Used t
 
 **Hardware:** STM32L011 MCU + TMP117 precision temperature sensor + piezo buzzer + LED + button (all on a 34mm round PCB).
 
+### PCB Renders (Track A)
+
+| Isometric View | Top View (Components) | Bottom View (Skin Contact / TMP117) |
+|:---:|:---:|:---:|
+| ![Isometric](../docs/assets/cryo-iso.png) | ![Top](../docs/assets/cryo-top.png) | ![Bottom](../docs/assets/cryo-bot.png) |
+
 **Firmware:** `firmware-stm32/` — PlatformIO + STM32Cube HAL.
 
 | Feature | Status | Description |

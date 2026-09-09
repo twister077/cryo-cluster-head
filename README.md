@@ -44,3 +44,10 @@ Whether you are an embedded firmware engineer (Zephyr / nRF), PCB designer (KiCa
 
 - **Firmware:** MIT
 - **Hardware:** CERN-OHL-S-2.0
+
+---
+
+## Contributors & AI Co-Developer
+
+- **Twister077** — Project Initiator, Lead Concept & Hardware Architect.
+- **Hermes Agent (Nous Research)** — AI Co-Developer & Engineering Assistant (assisted with KiCad schematic reconstruction, DRC/ERC validation, Gerber preparation, and repository structure).

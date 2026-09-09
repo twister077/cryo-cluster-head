@@ -2,6 +2,7 @@
 #include <math.h>
 
 #define SAMPLE_PERIOD_MS 2000
+#define SPAN_MINUTES      ((float)SAMPLE_PERIOD_MS / 60000.0f)
 
 void dTdt_Init(dTdt_t *s) {
     for (int i = 0; i < DTDT_WINDOW_SIZE; i++) s->buf[i] = 0;
@@ -13,24 +14,21 @@ void dTdt_Init(dTdt_t *s) {
 }
 
 void dTdt_Push(dTdt_t *s, float tempC) {
-    s->lastTemp = tempC;
+    float prevTemp = s->lastTemp;
+
     s->buf[s->idx] = tempC;
     s->idx = (s->idx + 1) % DTDT_WINDOW_SIZE;
     if (s->count < DTDT_WINDOW_SIZE) s->count++;
+
+    s->lastTemp = tempC;
 
     if (s->count < 2) {
         s->lastRate = 0;
         return;
     }
 
-    uint8_t oldest_idx;
-    if (s->count == DTDT_WINDOW_SIZE)
-        oldest_idx = s->idx;
-    else
-        oldest_idx = 0;
-
-    float delta = s->lastTemp - s->buf[oldest_idx];
-    float spanMin = ((float)(s->count - 1) * (float)SAMPLE_PERIOD_MS) / 60000.0f;
+    float delta = tempC - prevTemp;
+    float spanMin = SPAN_MINUTES;
     if (spanMin < 0.001f) spanMin = 0.001f;
     s->lastRate = delta / spanMin;
 }

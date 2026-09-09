@@ -10,16 +10,17 @@ By tracking rapid localized temperature changes ($\Delta T/\Delta t$) at the tem
 
 ---
 
-## Current Focus: The Cryo Temp Alert Patch (v6)
+## Current Focus & Development Tracks
 
-We have just completed the production-ready v6 hardware files for a miniature wearable test PCB (`cryo-alert-patch`), optimized for JLCPCB fabrication:
-- **Form Factor:** Ø34mm round 2-layer PCB designed for temple/skin placement.
-- **Sensor:** TMP117 high-precision temperature sensor positioned on the bottom layer (B.Cu) for direct skin contact.
-- **Microcontroller & Comm:** Designed for low-power operation and BLE connectivity.
-- **Status:** Fully validated via KiCad (0 DRC errors, 0 ERC errors) and ready for initial manufacturing and field testing.
+The repository is structured into two main tracks:
 
-### Why a Test PCB?
-This patch serves as an experimental prototype to test our core hypothesis: *Can continuous, localized skin temperature monitoring reliably detect autonomic prodromal spikes indicative of an incoming cluster headache attack?*
+### 🚀 Track A — Non-BLE Test Patch (Active Focus)
+- **Hardware:** Miniature round PCB (`cryo-alert-patch/hardware/pcb/`) featuring **STM32L011** MCU + **TMP117** high-precision temperature sensor (B.Cu contact), CR1220 battery, piezo buzzer, LED, and tactile switch (`SW1`).
+- **Firmware (`cryo-alert-patch/firmware-stm32/`)**: PlatformIO / STM32Cube HAL implementation featuring TMP117 I2C driver, ADC battery monitoring, alert state machine, and robust **$\Delta T/\Delta t$ flare-up detection** (validated with a host-side unit test suite).
+
+### 📡 Track B — BLE & Companion Ecosystem (Planned / Later)
+- **Hardware & Software:** nRF52832-based variants, `cryo-active-cooler/`, and `cryo-mobile-app/` (Flutter + Rust core).
+- **Status:** Documented for future integration after Track A hardware testing and validation are completed.
 
 ---
 
@@ -27,18 +28,19 @@ This patch serves as an experimental prototype to test our core hypothesis: *Can
 
 Building open-source medical/health hardware and embedded firmware is a massive undertaking for a single developer. **I cannot do this alone!** 
 
-Whether you are an embedded firmware engineer (Zephyr / nRF), PCB designer (KiCad), mobile app developer (Flutter/Rust), or a fellow cluster headache sufferer / researcher wanting to share insights — **your input, contributions, and feedback are immensely welcome.**
+Whether you are an embedded firmware engineer, PCB designer (KiCad), mobile app developer, or a fellow cluster headache sufferer / researcher wanting to share insights — **your input, contributions, and feedback are immensely welcome.**
 
 - **Open Issues & PRs:** Feel free to open issues or submit pull requests directly in this repository.
-- **Discussions / Contact:** Reach out via GitHub issues or discussions to collaborate on firmware development, clinical validation protocols, or companion app features.
+- **Discussions / Contact:** Reach out via GitHub issues or discussions to collaborate.
 
 ---
 
 ## Repository Structure
 
-- `cryo-alert-patch/` — Hardware (KiCad v6 schematics, PCB layout, Gerber files for JLCPCB) & firmware.
-- `cryo-mobile-app/` — Flutter companion app with Rust core for real-time $\Delta T/\Delta t$ analysis.
-- `cryo-active-cooler/` — Optional Peltier active cooling module concept.
+- `cryo-alert-patch/` — Hardware schematics, Gerber files, and firmware (`firmware-stm32/` for STM32 test track, `firmware/` for Zephyr/BLE).
+- `cryo-mobile-app/` — Flutter companion app with Rust core for real-time $\Delta T/\Delta t$ analysis *(Track B)*.
+- `cryo-active-cooler/` — Optional Peltier active cooling module concept *(Track B)*.
+- `plan.md` — Detailed multi-phase project roadmap.
 
 ## License
 
@@ -50,4 +52,4 @@ Whether you are an embedded firmware engineer (Zephyr / nRF), PCB designer (KiCa
 ## Contributors & AI Co-Developer
 
 - **Twister077** — Project Initiator, Lead Concept & Hardware Architect.
-- **Hermes Agent (Nous Research)** — AI Co-Developer & Engineering Assistant (assisted with KiCad schematic reconstruction, DRC/ERC validation, Gerber preparation, and repository structure).
+- **Hermes Agent (Nous Research)** — AI Co-Developer & Engineering Assistant (assisted with KiCad schematic reconstruction, DRC/ERC validation, Gerber preparation, and STM32 PlatformIO firmware/testing).

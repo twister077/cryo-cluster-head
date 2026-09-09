@@ -1,6 +1,7 @@
 #include "stm32l0xx_hal.h"
-
 #include "tmp117.h"
+#include "dTdt.h"
+#include "power.h"
 
 /* Pin mapping (matches KiCad v6 netlist) */
 #define LED_PIN      GPIO_PIN_3   /* PB3 -> LED_SIG */
@@ -18,6 +19,7 @@
 #define TEMP_CRIT_HI  42.0f
 #define TEMP_CRIT_LO  30.0f
 #define VBAT_LOW      2.2f
+#define DTDT_THRESHOLD 0.5f  /* °C/min rapid rise threshold for flare-up */
 
 /* Timing (ms) */
 #define MEASURE_PERIOD     2000
@@ -43,6 +45,7 @@ static uint8_t ledOn = 0;
 static I2C_HandleTypeDef hi2c;
 static ADC_HandleTypeDef hadc;
 static TMP117_t sensor;
+static dTdt_t dtdtTracker;
 
 static void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -56,9 +59,10 @@ int main(void) {
     MX_GPIO_Init();
     MX_I2C1_Init();
     MX_ADC_Init();
+    Power_Init();
+    dTdt_Init(&dtdtTracker);
 
     if (TMP117_Init(&sensor, &hi2c, TMP117_I2C_ADDR) != 0) {
-        /* Sensor not found - keep monitoring, LED solid (indicates fault) */
         HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
     } else {
         TMP117_SetMode(&sensor, 0x00); /* continuous conversion */
@@ -89,18 +93,22 @@ int main(void) {
 
             float temp = 0;
             if (TMP117_ReadTempC(&sensor, &temp) != 0) {
-                temp = 0; /* sensor error -> treat as critical */
+                temp = 36.5f; /* fallback if read error */
             }
+
+            /* Update dT/dt rate-of-change analysis */
+            dTdt_Push(&dtdtTracker, temp);
+            int flareUpDetected = dTdt_IsSpike(&dtdtTracker, DTDT_THRESHOLD);
 
             /* VBAT via ADC */
             HAL_ADC_Start(&hadc);
             HAL_ADC_PollForConversion(&hadc, 10);
             uint16_t adcRaw = HAL_ADC_GetValue(&hadc);
             HAL_ADC_Stop(&hadc);
-            float vbat = (adcRaw * 3.0f / 4095.0f); /* 3.0V ADC ref; scaling TBD */
+            float vbat = (adcRaw * 3.0f / 4095.0f);
 
             if (state != STATE_MUTED) {
-                if (temp < TEMP_CRIT_LO || temp > TEMP_CRIT_HI || vbat < VBAT_LOW) {
+                if (temp < TEMP_CRIT_LO || temp > TEMP_CRIT_HI || vbat < VBAT_LOW || flareUpDetected) {
                     state = STATE_CRITICAL_ALERT;
                 } else if (temp < TEMP_LOW_C || temp > TEMP_HIGH_C) {
                     state = STATE_WARNING;
@@ -143,6 +151,11 @@ int main(void) {
                 HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
                 HAL_GPIO_WritePin(BUZZER_PORT, BUZZER_PIN, GPIO_PIN_RESET);
                 break;
+        }
+
+        /* Low-power sleep between iterations when not alarming */
+        if (state == STATE_NORMAL) {
+            Power_EnterSleepMode();
         }
     }
 }

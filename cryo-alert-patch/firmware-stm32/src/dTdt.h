@@ -3,20 +3,22 @@
 
 #include <stdint.h>
 
-#define DTDT_WINDOW_SIZE 10  /* rolling window of samples */
+#define DTDT_WINDOW_SIZE 10
+#define DTDT_SPIKE_MIN_COUNT 3  /* need at least this many high-rate samples in a row */
 
 typedef struct {
     float buf[DTDT_WINDOW_SIZE];
     uint8_t idx;
-    uint8_t count;       /* how many valid samples (up to DTDT_WINDOW_SIZE) */
-    float  lastRate;     /* most recent dT/dt in °C/min */
-    float  lastTemp;     /* most recent raw temperature */
+    uint8_t count;
+    uint8_t spikeCount;   /* consecutive samples with rate above threshold */
+    float lastRate;       /* most recent dT/dt in °C/min */
+    float lastTemp;       /* most recent raw temperature */
 } dTdt_t;
 
 void  dTdt_Init(dTdt_t *s);
-void  dTdt_Push(dTdt_t *s, float tempC);
-float dTdt_GetRate(dTdt_t *s);      /* °C per minute */
-float dTdt_GetAvgTemp(dTdt_t *s);   /* moving average */
-int   dTdt_IsSpike(dTdt_t *s, float threshold); /* rate > threshold for >=2 consecutive reads */
+void  dTdt_Push(dTdt_t *s, float tempC); /* push + recompute rate */
+float dTdt_GetRate(dTdt_t *s);
+float dTdt_GetAvgTemp(dTdt_t *s);
+int   dTdt_IsSpike(dTdt_t *s, float threshold);
 
 #endif

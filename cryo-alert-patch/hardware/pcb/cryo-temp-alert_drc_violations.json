@@ -1,0 +1,338 @@
+{
+  "board": "/home/twister077/Projecten/cryo-temp-alert/cryo-temp-alert.kicad_pcb",
+  "timestamp": "2026-09-08T17:42:06",
+  "total_violations": 32,
+  "violation_counts": {
+    "nonmirrored_text_on_back_layer": 12,
+    "silk_overlap": 3,
+    "silk_over_copper": 15,
+    "silk_edge_clearance": 2
+  },
+  "severity_counts": {
+    "error": 0,
+    "warning": 32,
+    "info": 0
+  },
+  "violations": [
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 4.07,
+        "y": -4.5,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 6.93,
+        "y": -4.5,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 5.5,
+        "y": -4.5,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 2.07,
+        "y": -7.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 4.93,
+        "y": -7.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 3.5,
+        "y": -7.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": -3.0,
+        "y": 4.2,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": -3.0,
+        "y": -4.2,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": -3.0,
+        "y": 0.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 0.0,
+        "y": 5.05,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 0.0,
+        "y": 8.95,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "nonmirrored_text_on_back_layer",
+      "severity": "warning",
+      "message": "Non-Mirrored text on back layer",
+      "location": {
+        "x": 0.0,
+        "y": 7.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": -14.43,
+        "y": 2.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": -6.0,
+        "y": 11.07,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_overlap",
+      "severity": "warning",
+      "message": "Silkscreen clearance",
+      "location": {
+        "x": 7.4775,
+        "y": -7.762742,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": -14.43,
+        "y": 2.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": -13.5225,
+        "y": 2.237258,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": -12.4775,
+        "y": 2.237258,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 7.07,
+        "y": 2.5,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 7.9775,
+        "y": 2.737258,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 9.0225,
+        "y": 2.737258,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 6.57,
+        "y": -8.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 7.4775,
+        "y": -7.762742,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 8.5225,
+        "y": -7.762742,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 4.07,
+        "y": -4.5,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 4.99,
+        "y": -4.35942,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 6.01,
+        "y": -4.35942,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 2.07,
+        "y": -7.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 2.99,
+        "y": -6.85942,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_over_copper",
+      "severity": "warning",
+      "message": "Silkscreen clipped by solder mask",
+      "location": {
+        "x": 4.01,
+        "y": -6.85942,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 0.0,
+        "y": 0.0,
+        "unit": "mm"
+      }
+    },
+    {
+      "type": "silk_edge_clearance",
+      "severity": "warning",
+      "message": "Silkscreen clipped by board edge",
+      "location": {
+        "x": 0.0,
+        "y": 0.0,
+        "unit": "mm"
+      }
+    }
+  ]
+}

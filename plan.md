@@ -1,204 +1,103 @@
-# CryoClusterHead — Bouw- & Validatieplan
+# CryoClusterHead — Build & Validation Plan
 
-> **Doel:** De theorie valideren dat clusterhoofdpijn-opvlammingen detecteerbaar zijn via huidtemperatuur (dT/dt), door een werkende patch te bouwen en bij een echte patiënt te testen.
-
----
-
-## Achtergrond
-
-Het project beweert dat clusterhoofdpijn-aanvallen gepaard gaan met een snelle huidtemperatuurstijging op de slaap/nek, en dat een dT/dt-algoritme (rate of change) vroege detectie mogelijk maakt, nog voor de piekpijn. **Dit is een onbewezen hypothese**, niet gebaseerd op peer-reviewed onderzoek. De enige manier om te valideren of dit klopt, is door de hardware te bouwen en bij jezelf te testen.
+> **Goal:** Validate the theory that cluster headache flare-ups can be detected via skin temperature (dT/dt), by building a working patch and testing it on a real patient.
 
 ---
 
-## Fase 0 — Project fixes (code + docs)
+## Background
 
-Voordat er gebouwd wordt, krijgt de bestaande codebase onderhoud.
+The project claims that cluster headache attacks are accompanied by a rapid rise in skin temperature at the temple/neck, and that a dT/dt algorithm (rate of change) enables early detection, even before peak pain. **This is an unproven hypothesis**, not based on peer-reviewed research. The only way to validate whether this holds is to build the hardware and test it on yourself.
 
-**Wat:** | **Waarom:**
+---
+
+## Phase 0 — Project fixes (code + docs)
+
+Before anything is built, the existing codebase receives maintenance.
+
+**What:** | **Why:**
 ---------|----------
-CI workflows repareren (`app/rust-core` → `cryo-mobile-app/rust-core`, etc.) | 3 van de 6 workflows verwijzen naar niet-bestaande paden en zullen falen in CI
-`main.c` BLE advertisement stub repareren | `update_ble_advertisement()` maakt een lokale array maar verstuurt niets via BLE — de patch zou nooit zichtbaar zijn voor de app
-Flutter deprecated API's vervangen (`withKeywords`, `withValues`) | Compileert niet met huidige `flutter_blue_plus` en Flutter SDK versies
-`rust_bridge.dart` unused import verwijderen | Schoonhouden
-Documentatie bijwerken — theorie → hypothese | Claims als "detects flare-ups before peak pain" → "aims to detect"
-Logging-formaat toevoegen voor data-export | Essentieel voor latere validatie-analyse
+Fix CI workflows (`app/rust-core` → `cryo-mobile-app/rust-core`, etc.) | 3 of the 6 workflows point to non-existent paths and will fail in CI
+Fix the `main.c` BLE advertisement stub | `update_ble_advertisement()` creates a local array but sends nothing over BLE — the patch would never be visible to the app
 
 ---
 
-## Fase 1 — Eerste werkende setup (nRF52 DK i.p.v. custom PCB)
+## Phase 1 — Validate & build the hardware
 
-Omdat de maker alleen through-hole ervaring heeft en geen nRF52-programmer bezit, wordt een **nRF52832 Development Kit (nRF52 DK)** gebruikt in plaats van de custom PCB (QFN-48 is te uitdagend zonder reflow-ervaring). De programmeerder/debugger zit ingebouwd op de DK.
+### 1.1 Validate the current prototype board (nRF52832, MAX30205)
 
-### Stappen
+The existing v6 PCB needs a thorough review before field testing:
 
-| # | Actie | Kosten |
-|---|-------|--------|
-| 1.1 | **nRF52 DK kopen** (Mouser/Digikey — ~€35) | €35 |
-| 1.2 | **MAX30205 breakout kopen** (SparkFun MAX30205 breakout of losse TDFN-8 + breakoutboard — ~€10) | €10 |
-| 1.3 | Dupont-draden (female-female), breadboard, usb-kabel | €5 |
-| 1.4 | **Zephyr toolchain installeren**: Python, West, ARM GCC | gratis |
-| 1.5 | MAX30205 aansluiten op DK (I2C: SDA/SCL → DK pin 27/28, 3.3V → pin 15, GND → pin 29) | — |
-| 1.6 | Firmware bouwen & flashen | — |
-| 1.7 | **Verifiëren** met nRF Connect app (Android/iOS): zie je "CryoPatch" met temperatuurdata? | gratis |
+- **Run DRC/ERC again** — confirm the routing was completed, not just the schematic
+- **Verify pin assignments** against the actual nRF52832 datasheet (QFN-48) — the earlier analysis found mismatches between schematic nets and physical pins (e.g. GND instead of DEC/XC pins)
+- **Check the battery positive terminal** — the via to the VCC_NRF plane was previously routed outside the board boundary
+- **Confirm antenna matching** — without a 32 MHz crystal and antenna matching network the chip cannot transmit
 
-**Totaal fase 1: ~€50**
+### 1.2 Assemble a first test unit
 
-### Aansluitschema MAX30205 ↔ nRF52 DK
+- **Order PCBA** via JLCPCB (recommended for small SMD components)
+- identify the Crystal/antenna components that are missing
+- Probe all power rails before powering on the MCU
 
-```
-MAX30205 Pin     nRF52 DK Pin
-────────────────────────────────
-VDD        →     3.3V (P15)
-GND        →     GND (P29)
-SCL        →     P0.27 (P27) — I2C1 SCL
-SDA        →     P0.28 (P28) — I2C1 SDA
-```
+### 1.3 Bench test with a logic analyzer / scope
 
-Pull-up weerstanden (10kΩ) op SCL/SDA — op de meeste breakouts al aanwezig, anders via breadboard toevoegen.
+- Verify **I2C communication** with the temperature sensor
+- Confirm **BLE advertisement** packets on a sniffer
+- Measure the **actual power consumption** in sleep mode
 
 ---
 
-## Fase 2 — Mobile app werkend krijgen
+## Phase 2 — dT/dt detection firmware
 
-### Stappen
-
-| # | Actie |
-|---|-------|
-| 2.1 | Rust toolchain installeren (`rustup`) |
-| 2.2 | `cryo-mobile-app/rust-core` builden: `cargo test && cargo build --release` |
-| 2.3 | Flutter SDK installeren |
-| 2.4 | `cryo-mobile-app/flutter` repareren (deprecated API's) |
-| 2.5 | App draaien op Android telefoon: `flutter run` |
-| 2.6 | Verbinden met de patch — zie je temperatuur op het dashboard? |
-
-### Bekende problemen
-
-- `dashboard.dart` gebruikt `FlutterBluePlus.startScan(withKeywords: [...])` — deze parameter is verwijderd in recente versies. Oplossing: filteren op `device.platformName` na scan.
-- `history.dart` gebruikt `.withValues(alpha: ...)` — vervangen door `.withOpacity(...)` voor oudere Flutter.
-- `rust_bridge.dart` importeert `package:ffi/ffi.dart` maar gebruikt het niet.
+- Implement **temperature sampling** at a fixed interval (e.g. every 30–60 s) with a rolling window
+- Compute the **rate of change (dT/dt)** over the window
+- Trigger an **alert** when dT/dt exceeds a configurable threshold for N consecutive samples (reject single spikes)
+- Send the alert as a **BLE notification** to the phone app
 
 ---
 
-## Fase 3 — Zelf-testen & data loggen (de validatie)
+## Phase 3 — Mobile app: real-time monitoring
 
-Dit is de kern: wordt de hypothese bevestigd of weerlegd?
-
-### Opzet
-
-- Patch dragen op de slaap (rechterzijde = ipsilateraal bij clusterhoofdpijn)
-- 24/7 meten, 1 sample per minuut
-- **Elke opvlamming loggen**: tijdstip + ernst (1-10) noteren in app of notitie
-- Data verzamelen gedurende minimaal 2 weken (liefst 4)
-
-### Analyse
-
-- Exporteren van temperatuur-tijdreeks
-- Visueel inspecteren: zie je een temperatuurstijging vóór elke opvlamming?
-- dT/dt parameters tunen:
-  - Window size: 3–20 samples (3–20 minuten venster)
-  - Threshold: 0.1–2.0 °C/min
-  - Debounce count: 1–3
-- Valideren: wat is de false-positive rate? Wat is de detectie-rate?
-
-### Criteria
-
-| Resultaat | Conclusie |
-|-----------|-----------|
-| Temperatuurstijging zichtbaar vóór ≥ 70% van de opvlammingen | Hypothese bevestigd — dT/dt werkt |
-| Temperatuurstijging soms, maar niet consistent | Parameters tunen; misschien hogere sample rate (elke 30s) nodig |
-| Geen correlatie | Hypothese weerlegd voor deze persoon — alternatieve sensor nodig (NIRS, hartslag, etc.) |
+- Show **live temperature + dT/dt** on the dashboard
+- **Push notification** on alert (local, and remote if needed)
+- **History graph** so the patient can identify triggers
+- Profile/export the logged data for later analysis
 
 ---
 
-## Fase 4 — Project updaten met resultaten
+## Phase 4 — Field test (single user)
 
-Na de testperiode wordt alles bijgewerkt op basis van echte data:
-
-### Code
-
-- Standaard dT/dt parameters aanpassen (threshold, window size, debounce) op basis van jouw data
-- Data-export functionaliteit toevoegen (CSV, JSON)
-- Automatische flare-up log toevoegen aan de app
-- Historiegrafiek verbeteren met markeringen voor opvlammingen
-
-### Documentatie
-
-- README herschrijven: van "detects flare-ups" → "showed X% detection rate in N=1 self-test"
-- Bevindingen documenteren in `docs/validation.md`
-- Configuratie-aanbevelingen voor toekomstige gebruikers
-
-### Hardware
-
-- **Alleen bij bewezen werking:** custom PCB (20×20mm) laten fabriceren bij JLCPCB
-- TPU 3D-print behuizing ontwerpen
-- Componenten bestellen voor de definitieve patchoromot
+- Wear the patch during a **real cluster headache** (or during a few normal days)
+- Log all temperature data + timestamps
+- Compare with the **known attack timeline** (from the patient's log)
+- Determine sensitivity/specificity of the alert (how many seconds before peak pain, how many false positives)
 
 ---
 
-## Tijdsinschatting
+## Phase 5 — Community & open science
 
-| Fase | Tijd | Afhankelijk van |
-|------|------|----------------|
-| Fase 0 — Code fixes | ~2 uur | — |
-| Fase 1 — DK setup | ~3 uur | Bestelling (~1 week levertijd) |
-| Fase 2 — Mobile app | ~3 uur | Fase 1 (DK) |
-| Fase 3 — Testen | 2–4 weken | Fase 1 + 2 |
-| Fase 4 — Project updaten | ~4 uur | Fase 3 resultaten |
-
-**Totale doorlooptijd:** 3–5 weken (excl. wachten op bestellingen)
+- Publish the **dataset** (anonymized) of temperature curves
+- Write up the **validated hypothesis** as a case report
+- Open the results as a **discussion** so others can reproduce and improve the method
 
 ---
 
-## Benodigdheden
+## Open questions / risks
 
-### Hardware (aan te schaffen)
-
-| Item | Geschatte prijs | Waar |
-|------|----------------|------|
-| nRF52832 DK (PCA10040) | €35 | Mouser, Digikey |
-| MAX30205 breakout | €10 | SparkFun, AliExpress |
-| Dupont-draden (F/F) | €3 | Lokale elektronicawinkel |
-| Breadboard | €3 | - |
-| Micro-USB kabel | €2 | - |
-
-### Software (gratis)
-
-- Python 3.x + West (`pip install west`)
-- ARM GCC toolchain (Zephyr SDK of gcc-arm-none-eabi)
-- nRF Command Line Tools
-- Rust (`rustup`)
-- Flutter SDK
-- nRF Connect app (op telefoon)
-
-### Optioneel (voor fase 4)
-
-- TPU filament voor 3D-printer
-- JLCPCB order voor custom PCB
-- CR1220 batterij + SMD houder
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Hypothesis is wrong (no reliable dT/dt spike) | The whole concept fails | Cost of validation is only 1 PCB + firmware. Do this first. |
+| Hardware bugs (pinout, crystal, antenna) | No reading / no transmission | Double-check pinout with datasheet, bench-test before patient |
+| Temperature noise | False positives | Require N consecutive samples above threshold |
+| Battery too small | Short runtime, patch stops | Measure sleep power; if needed, larger CR2032 or rechargeable |
+| BLE range / phone pairing | Missed alerts | Robust scan + reconnect logic in app |
 
 ---
 
-## Risico's & Mitigatie
+## Priorities (what to do first)
 
-| Risico | Kans | Mitigatie |
-|--------|------|-----------|
-| Geen temperatuurstijging detecteerbaar | Middel | Dan is de hypothese weerlegd — nog waardevolle uitkomst. Andere sensoren overwegen (NIRS, hartslagvariabiliteit) |
-| MAX30205 I2C werkt niet op breadboard | Klein | 10kΩ pull-ups controleren, adres checken (0x48), logic analyzer gebruiken |
-| Flutter BLE werkt niet met nRF52 DK | Klein | nRF Connect app als referentie; als het daarmee werkt, ligt het aan Flutter |
-| QFN solderen lukt niet (fase 4 custom PCB) | Groot | Daarom beginnen we met DK. Als custom PCB later nodig is: JLCPCB assembled PCBA bestellen |
-| Te weinig opvlammingen in testperiode | Variabel | Testperiode verlengen of eerder verzamelde data gebruiken |
+1. **Validate the existing PCB** (DRC/ERC, pinout, missing crystal/antenna) — if it is fundamentally broken, a redesign costs less earlier.
+2. **Get a working board + firmware** (any sensor, any MCU) — prove skin temp detection works.
+3. **Then the app, notifications, and field test.**
+4. Anything cosmetic (nice UI, polish) is last.
 
----
-
-## Go / No-go momenten
-
-| Moment | Vraag |
-|--------|-------|
-| Na fase 1.7 | Werkt de BLE-communicatie? → Zo nee, debuggen. Zo ja, door naar fase 2. |
-| Na fase 3 | Is er een correlatie tussen temperatuurstijging en opvlamming? → Zo nee, theorie verwerpen of alternatieve sensor proberen. Zo ja, door naar fase 4. |
-| Na fase 4 | Is een custom PCB de moeite waard? → Alleen als de detectie betrouwbaar genoeg is voor dagelijks gebruik. |
-
----
-
-> **⚠ Experimenteel apparaat. Geen gecertificeerd medisch product. Gebruik op eigen risico.**
-> Het doel is om een hypothese te toetsen, niet om een medisch hulpmiddel te bouwen.
+> **Bottom line:** the fastest path to knowing "does this work?" is a minimal, validated board that samples temperature and reports dT/dt. Everything else is secondary.
